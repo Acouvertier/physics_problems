@@ -41,7 +41,7 @@ class PhysicsProblems:
                 holder.append(rd.randrange(-5,5,2))
 
         ans = (holder[0] + holder[1])/2
-        for i in range(2, num_balls - 1):
+        for i in range(2, num_balls):
             ans = (ans + holder[i])/2
         
         print(f"You are given {num_balls} metal balls that are placed in a line from left to right.\nThe charges on these balls, from left to right, are given as {holder},\nwhere the the first number is the leftmost ball and the last is the rightmost.\nIf the balls are made touch, one pair at a time from left to right, what will the net charge on the last ball be?\n(Ex. If there are 3 balls, the leftmost will touch the middle, then the middle will touch the rightmost).\nANSWER: {ans}")
@@ -118,7 +118,7 @@ class PhysicsProblems:
         
         k = PhysicsProblems.CONSTANTS["K"]
         
-        unitDistances = list(range(-5,5,1))
+        unitDistances = range(-5,5,1)
         fixedX = rd.sample(unitDistances,k=num_particles)
         fixedY = rd.sample(unitDistances,k=num_particles)
 
@@ -140,6 +140,6 @@ class PhysicsProblems:
 
         return "You are given the following charges at fixed positions:\n" + particlePhrase + f"What is the net electric force on charge {particle_to_find}?\nAnswer: {ans[0]}"
 
-print(PhysicsProblems.charge_conservation(4))
+print(PhysicsProblems.electric_force_2D_n_particles_question(2))
 
             
