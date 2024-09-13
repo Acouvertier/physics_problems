@@ -3,6 +3,7 @@ import numpy as np
 import math
 import statistics
 from fractions import Fraction
+import sympy as sym
 
 class MathProblems:
 
@@ -120,9 +121,6 @@ class MathProblems:
     
     """Test Prep"""
     
-    """
-    This will return a word problem with 1 to 2 rates
-    """
     def oneRateProblem():
         ans = rd.randint(2,10)
         nice_factors = [1,2,4,5,8,10,16,20,25,40,50]
@@ -187,7 +185,74 @@ class MathProblems:
                 question = rd.choice(wordproblemsMT)
         
         return question + f" ANSWER: {ans} {au}"
+    
+    def namingTriangles():
+        sides = ['equilateral','scalene','scalene','isosceles','isosceles']
+        angles = ['right', 'acute', 'obtuse']
+        
+        ansSide = rd.choice(sides)
+        
+
+        if ansSide == 'equilateral':
+            sides = [rd.randint(3,41)] * 3
+            ansAngle = 'acute'
+            return [f"A triangle is made of sides with lengths {sides[0]}, {sides[1]}, and {sides[2]}. What is the best description for this triangle",f"ANSWER: {ansSide} {ansAngle}"]
+        elif ansSide == 'isosceles':
+            sides = [rd.randint(3,41)]*2
+            
+        else:
+            sides = rd.sample(range(3,41),k=2)
+        
+        ansAngle = rd.choice(angles)
+
+        largestIndex = rd.choice([0,1,2])
+
+        if largestIndex == 2:
+            thirdSideBound = sym.sqrt(sides[0]**2 + sides[1]**2)
+            if ansAngle == 'right':
+                thirdSide = thirdSideBound
+            elif ansAngle == 'obtuse': 
+                thirdSideMaxBound = np.sum(sides)
+                thirdSideMinBound = math.ceil(thirdSideBound.doit())
+                thirdSide = rd.randrange(thirdSideMinBound,thirdSideMaxBound-1)
+            else: 
+                thirdSideMinBound = max(sides)
+                thirdSideMaxBound = math.floor(thirdSideBound.doit())
+                thirdSide = rd.randrange(thirdSideMinBound+1,thirdSideMaxBound)
+        else:
+            leftover = 0 if largestIndex == 1 else 1
+            thirdSideBound = sym.sqrt(sides[largestIndex]**2 - sides[leftover]**2)
+            if ansAngle == 'right':
+                thirdSide = thirdSideBound
+            elif ansAngle == 'acute': 
+                thirdSideMaxBound = max(sides)
+                thirdSideMinBound = math.ceil(thirdSideBound.doit())
+                thirdSide = rd.randrange(thirdSideMinBound,thirdSideMaxBound-1)
+            else: 
+                thirdSideMinBound = max(sides) - min(sides)
+                thirdSideMaxBound = math.floor(thirdSideBound.doit())
+                thirdSide = rd.randrange(thirdSideMinBound+1,thirdSideMaxBound)
+
+        sides.append(thirdSide)
+        rd.shuffle(sides)
+        
+        return [f"A triangle is made of sides with lengths {sides[0]}, {sides[1]}, and {sides[2]}. What is the best description for this triangle",f"ANSWER: {ansSide} {ansAngle}"]
+
+    def makeValidTriangle():
+        sides = rd.choices(range(3,25),k=2)
+        thirdLargest = rd.choice([True,False])
+        if thirdLargest:
+            minLen = max(sides) + 1
+            maxLen = np.sum(sides) - 1
+            sides.append(rd.randint(minLen,maxLen))
+        else:
+            minLen = max(sides) - min(sides) + 1 
+            maxLen = max(sides) - 1
+            sides.append(rd.randint(minLen,maxLen))
+        
+        return rd.sample(sides,k=len(sides))
 
 
+        
  
-print(MathProblems.oneRateProblem())
+print(MathProblems.makeValidTriangle())
