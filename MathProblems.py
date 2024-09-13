@@ -252,7 +252,88 @@ class MathProblems:
         
         return rd.sample(sides,k=len(sides))
 
+    def quadraticFormsEquivalence():
+        forms = {
+            'roots':['sum','product','smaller','larger'],
+            'vertex':['h','k','a'],
+            'standard':['y-intercept','a','b']
+            }
+        
+        [given,ans] = rd.sample(list(forms.keys()),k=2)
+        x = sym.Symbol(rd.choice(["x","r","t","m","w","z","s"]))
+        question = rd.choice(forms[ans])
+        
+        if given == 'roots':
+            [u,v,extraX] = rd.sample(range(-7,7,2),k=3)
+            a = rd.randrange(-3,3,2)
+            funct = a*(x-u)*(x-v)
+            extraY = funct.subs(x,extraX)
+            features = f"A certain quadratic written as f({x}) = a({x}-u)({x}-v) has roots at {x} = {u} and {x} = {v}. It is also known to go through the point ({extraX},{extraY})"
+        elif given == 'vertex':
+            [h,k,extraX] = rd.sample(range(-7,7,2),k=3)
+            a = rd.randrange(1,4) if k < 0 else rd.randrange(-4,-1)
+            funct = a*(x-h)**2 + k
+            extraY = funct.subs(x,extraX)
+            features = f"A certain quadratic written as f({x}) = a({x}-h)**2 + k has its vertex at ({h},{k}). When graphed it goes through the point ({extraX},{extraY})"
+        else:
+            [b,c,extraX] = rd.sample(range(-7,7,2),k=3)
+            a = rd.randrange(1,4) if c < 0 else rd.randrange(-4,-1)
+            funct = a*x**2 + b*x + c
+            extraY = funct.subs(x,extraX)
+            features = f"A certain quadratic written as f({x}) = a{x}**2 + b{x} + c has its y-intercept at y = {c} and axis of symmetry at x = {Fraction(-b,2*a)}. One point on the graph is ({extraX},{extraY})"
+        
+        if set([question]) < set(['sum', 'product']):
+            rootWord = rd.choice(["roots", "x-intercepts","zeroes"])
+            phrase = f"What are the {question} of the {rootWord}?"
+            roots = sym.solve(funct,x)
+            answer = np.sum(roots).doit() if (question == 'sum') else sym.simplify(sym.prod(roots))
+        elif set([question]) < set(['smaller','larger']):
+            rootWord = rd.choice(["roots", "x-intercepts","zeroes"])
+            phrase = f"What is the value for the {question} of the two {rootWord}?"
+            roots = sym.solve(funct,x)
+            answer = min(roots) if (question == 'smaller') else max(roots)
+        elif set([question]) < set(['h','k']):
+            if question == 'h':
+                phrase = rd.choice([
+                    "What is the axis of symmetry?",
+                    "If the quadratic is written as f(x) = a(x-h)**2 + k, what is the value of h?",
+                    "What is the x-coordinate of the vertex?"
+                ])
+            else:
+                minMax = 'minimum' if (a < 0) else 'maximum' 
+                phrase = rd.choice([
+                    f"What is the {minMax} for this quadratic?",
+                    f"If the quadratic is written as f({x}) = a({x}-h)**2 + k, what is the value of k?",
+                    "What is the y-coordinate of the vertex?"
+                ])
+            roots = sym.solve(funct,x)
+            answer = np.sum(roots)/2 if (question == 'h') else funct.subs(x,np.sum(roots)/2)
+        elif question == 'a':
+            if ans == 'root':
+                form = f"a({x}-u)(x-v)"
+            elif ans == 'vertex':
+                form = f"a({x}-h)**2 + k"
+            else: 
+                form = f"a{x}**2 + b{x} + c"
+            
+            phrase = f"If the quadratic is rewritten as {form}, what is the value of a?"
+            answer = a
+        elif question == 'y-intercept':
+            phrase = rd.choice(["Where does the quadratic intersect the y-axis?", f"What is the value of the quadratic when {x}=0","What is the y-intercept for this parabola?"])
+            answer = funct.subs(x,0)
+        else: 
+            phrase = "What is the value of b when the parabola is expressed in the form " + f"a{x}**2 + b{x} + c"
+            answer =  -2*a*np.sum(sym.solve(funct,x))/2
 
         
+        return [features, phrase, answer]
+
+    def quadraticRealSolutionCount():
+        forms = ['root', 'vertex', 'standard']
+        numSols = [0,1,2]
+        findToMake = rd.choice([True,False]) #True will have the question ask for a coefficient to ensure the correct number of solutions
+
+        if findToMake:
+            pass
  
-print(MathProblems.makeValidTriangle())
+print(MathProblems.quadraticFormsEquivalence())
