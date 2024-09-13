@@ -2,6 +2,7 @@ import random as rd
 import numpy as np
 import math
 import statistics
+from fractions import Fraction
 
 class MathProblems:
 
@@ -32,9 +33,6 @@ class MathProblems:
                 front = f"{sign} {abs(value)}"
             
             return front
-        
-        
-
         
     def setGenericCoefficients(hasOneSolution=True):
         if hasOneSolution:
@@ -120,4 +118,76 @@ class MathProblems:
         data = rd.sample(given + [lastValue],k=size)
         return f"What is the mean of the data set: {data}? ; ANSWER: {ans}"
     
-print(MathProblems.twoSidedSingleVariable("x",3,False))
+    """Test Prep"""
+    
+    """
+    This will return a word problem with 1 to 2 rates
+    """
+    def oneRateProblem():
+        ans = rd.randint(2,10)
+        nice_factors = [1,2,4,5,8,10,16,20,25,40,50]
+        
+        units = {
+            "length": ["meters", "feet", "inches", "yards", "miles"],
+            "time": ["seconds", "hours", "minutes", "years", "days"],
+            "mass": ["pounds", "kilograms", "grams", "gallons", "cups"]
+                 }
+        
+        rate = Fraction(rd.choice(nice_factors),rd.choice(nice_factors))
+            
+        given = (ans*(rate.denominator)/(rate.numerator))
+        
+        [givenUnits, ansUnits, missingUnits] = rd.sample(list(units.keys()),3)
+
+        gu = rd.choice(units[givenUnits])
+        au = rd.choice(units[ansUnits])
+        mu = rd.choice(units[missingUnits])
+
+        if set([givenUnits,ansUnits]) == set(["length","mass"]):
+            if givenUnits == "length":
+                wordproblemsLM = [
+                    f"A certain cement truck has covered a distance of {given} {gu} while laying cement.\nIf the truck can lay {rate.numerator} {au} of cement for every {rate.denominator} {gu}, how many {au} of cement have been layed?",
+                    f"While driving cross country, the odometer has increased by {given} {gu}.\nIf your car is known to use {rate.numerator} {au} of gas for every {rate.denominator} {gu} traveled, how many {au} of gas have been used?",
+                    f"The local fair is hosting a hot-dog eating contest where a meter goes up {rate.denominator} {gu} for every {rate.numerator} {au} of hot dogs eaten.\nIf the meter is up {given} {gu}, how many {au} of hot dogs have been eaten?"
+                    ]
+                question = rd.choice(wordproblemsLM)
+            else:
+                wordproblemsML = [
+                    f"When drawing lines on the road, machines keep a constant pace of {rate.numerator} {au} of road covered using exactly {rate.denominator} {gu} of paint. In one day, {given} {gu} of paint is actually used. What is the length of road covered?",
+                    f"A certain metalmaker can craft {given} {gu} of metal during their shift. If one sheet of metal is {rate.numerator} {au} for every {rate.denominator} {gu} of metal used, what is the total length of sheet produced?",
+                    f"At the fair, a contestant has eaten {given} {gu} of ice cream. Behind them a gauge goes up based on how much ice cream they eat. If {rate.denominator} {gu} of ice cream causes the gauge to rise {rate.numerator} {au}, how tall is the gauge behind the contestant?"
+                    ]
+                question = rd.choice(wordproblemsML)
+        
+        if set([givenUnits,ansUnits]) == set(["length","time"]):
+            if givenUnits == "length":
+                wordproblemsLT = [
+                    f"A car has traveled {given} {gu}. Based on the Kelly Blue Book, it can travel consistently for {rate.denominator} {gu} every {rate.numerator} {au}. How much time has passed since the car got on the road?",
+                    f"Bored on a weekend, you watch a snail travel {given} {gu} on the sidewalk. Going inside, you learn it takes snails {rate.numerator} {au} to travel {rate.denominator} {gu}. How much time passed while watching the snail?"
+                ]
+                question = rd.choice(wordproblemsLT)
+            else:
+                wordproblemsTL = [
+                    f"Between stops, trains reach a speed of {rate.numerator} {au} every {rate.denominator} {gu}. If the conductor says you have {given} {gu} before arrving at your stop, what is the distance between the stop?",
+                    f"In a recent study, scientists discovered hair can grow {rate.numerator} {au} every {rate.denominator} {gu} in some cases. To test this you decide to grow your hair out for {given} {gu}. If the scientists are correct, how much extra hair should you have?"
+                ]
+                question = rd.choice(wordproblemsTL)
+        if set([givenUnits,ansUnits]) == set(["time","mass"]):
+            if givenUnits == "time":
+                wordproblemsTM = [
+                    f"A typical shift for an ice cream truck is {given} {gu}. The machine in the truck dispenses ice cream at a constant rate to keep costs low. To be precise, the machine dispenses {rate.numerator} {au} of ice cream every {rate.denominator} {gu}. How many {au} of ice cream are dispensed in a regular shift?",
+                    f"Popcorn at the movie theatre is made at constant rate: {rate.denominator} {gu} to make {rate.numerator} {au} of popcorn. If the machine runs for {given} {gu}, how many {au} of popcorn is made?"
+                ]
+                question =  rd.choice(wordproblemsTM)
+            else:
+                wordproblemsMT = [
+                    f"While sitting in traffic, your car has used {given} {gu} of gas. The standard idling rate is known to be {rate.numerator} {au} of run time for every {rate.denominator} {gu} of gas used. How long has your car been idling for?",
+                    f"Wind turbines are incredibly efficient at moving vast quantities of air. In lab testing, scientists can create turbines that move {rate.denominator} {gu} of air every {rate.numerator} {au}. In the air, these turbines typically move {given} {gu} of air in a single trip. How much time does it take to complete a single trip?"
+                ]
+                question = rd.choice(wordproblemsMT)
+        
+        return question + f" ANSWER: {ans} {au}"
+
+
+ 
+print(MathProblems.oneRateProblem())
