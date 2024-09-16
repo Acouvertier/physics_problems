@@ -329,11 +329,32 @@ class MathProblems:
         return [features, phrase, answer]
 
     def quadraticRealSolutionCount():
-        forms = ['root', 'vertex', 'standard']
+        
         numSols = [0,1,2]
+        solAns = rd.choice(numSols)
         findToMake = rd.choice([True,False]) #True will have the question ask for a coefficient to ensure the correct number of solutions
 
+        a = rd.randrange(-5,5,2)
+        b = rd.randint(-10,10)
+        cDivide = Fraction((b**2)/(4*a)).limit_denominator()
+        
+        if solAns == 1:
+            c = cDivide
+        elif solAns == 2:
+            c = cDivide + 1 if cDivide.is_integer() else math.ceil(cDivide)
+        else: 
+            c = cDivide - 1 if cDivide.is_integer() else math.floor(cDivide)
+
         if findToMake:
-            pass
+            randomIndex = rd.choice([0,1,2])
+            allSubs = [a,b,c]
+            ans = allSubs[randomIndex]
+            allSubs[randomIndex] = rd.choice(["d","q","p","r","t","w"])
+            return [f"If a quadratic, f(x), written as f(x) = {allSubs[0]}x**2 + {allSubs[1]}x + {allSubs[2]}, what value of {allSubs[randomIndex]} will ensure the quadratic has {solAns} distinct solutions?", f"ANSWER: {allSubs[randomIndex]} = {ans}"]
+            
+        else:
+            return [f"How many real solutions exist for the equation, {a}x**2 + {b}x + {c} = 0",f"ANSWER: {solAns}"] 
+            
+
  
-print(MathProblems.quadraticFormsEquivalence())
+print(MathProblems.quadraticRealSolutionCount())
