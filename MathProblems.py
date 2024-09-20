@@ -331,29 +331,61 @@ class MathProblems:
     def quadraticRealSolutionCount():
         
         numSols = [0,1,2]
-        solAns = rd.choice(numSols)
-        findToMake = rd.choice([True,False]) #True will have the question ask for a coefficient to ensure the correct number of solutions
+        missingCoeffs = [0,1,2,3,3] #if 3 is choosen the question will ask the student to find the solution count rather than a missing coefficient to satisfy solution count
 
-        a = rd.randrange(-5,5,2)
-        b = rd.randint(-10,10)
-        cDivide = Fraction((b**2)/(4*a)).limit_denominator()
-        
-        if solAns == 1:
-            c = cDivide
-        elif solAns == 2:
-            c = cDivide + 1 if cDivide.is_integer() else math.ceil(cDivide)
-        else: 
-            c = cDivide - 1 if cDivide.is_integer() else math.floor(cDivide)
+        numAns = rd.choice(numSols)
+        removeCoeff = rd.choice(missingCoeffs)
 
-        if findToMake:
-            randomIndex = rd.choice([0,1,2])
-            allSubs = [a,b,c]
-            ans = allSubs[randomIndex]
-            allSubs[randomIndex] = rd.choice(["d","q","p","r","t","w"])
-            return [f"If a quadratic, f(x), written as f(x) = {allSubs[0]}x**2 + {allSubs[1]}x + {allSubs[2]}, what value of {allSubs[randomIndex]} will ensure the quadratic has {solAns} distinct solutions?", f"ANSWER: {allSubs[randomIndex]} = {ans}"]
-            
+        if removeCoeff == 0:
+            [b, c] = rd.choices(range(-9,9,2),k=2)
+            a = Fraction((b**2)/(4*c)).limit_denominator()
+            if (numAns == 0 or numAns == 2) and c > 0:
+                a = a + 1 if  Fraction.is_integer(a) else math.ceil(a)
+                phrase = 'smallest integer'
+            elif (numAns == 0 or numAns == 2) and c < 0:
+                a = a - 1 if Fraction.is_integer(a) else math.floor(a)
+                phrase = 'largest integer'
+            else:
+                a = a
+                phrase = 'exact'
+
+
+        elif removeCoeff == 1:
+            [a, c] = rd.choice([rd.choices(range(1,9,2),k=2),rd.choices(range(-9,-1,2),k=2)])
+            b = math.sqrt(4*a*c)
+            if numAns == 0:
+                b = math.ceil(b-1)
+                phrase = 'largest integer'
+            elif numAns == 2:
+                b = math.floor(b+1)
+                phrase = 'smallest integer'
+            else:
+                b = b
+                phrase = 'exact'
         else:
-            return [f"How many real solutions exist for the equation, {a}x**2 + {b}x + {c} = 0",f"ANSWER: {solAns}"] 
+            [a,b] = rd.choices(range(-9,9,2),k=2)
+            c = Fraction((b**2)/(4*a)).limit_denominator()
+            if (numAns == 0 or numAns == 2) and a > 0:
+                c = c + 1 if  Fraction.is_integer(c) else math.ceil(c)
+                phrase = 'smallest integer'
+            elif (numAns == 0 or numAns == 2) and c < 0:
+                c = c - 1 if Fraction.is_integer(c) else math.floor(c)
+                phrase = 'largest integer'
+            else:
+                c = c
+                phrase = 'exact'
+            
+        finalCoeffs = [a,b,c]
+        if removeCoeff == 3:
+             return f"How many distinct solutions exist for the quadratic given as y = {finalCoeffs[0]}x**2 + {finalCoeffs[1]}x + {finalCoeffs[2]} ? ANSWER: {numAns}"
+        else:
+            ans = finalCoeffs[removeCoeff]
+            missingSymbol = rd.choice(["m","q","w","t","r","s"])
+            finalCoeffs[removeCoeff] = missingSymbol
+
+            return f"A quadratic given as y = {finalCoeffs[0]}x**2 + {finalCoeffs[1]}x + {finalCoeffs[2]} has {numAns} distinct real rools. What is the {phrase} value for {missingSymbol}? ANSWER: {ans}"
+
+
             
 
  
