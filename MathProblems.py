@@ -389,4 +389,9 @@ class MathProblems:
             
 
  
+print(MathProblems.quadraticFormsEquivalence())
+print(MathProblems.quadraticFormsEquivalence())
+print(MathProblems.quadraticFormsEquivalence())
+print(MathProblems.quadraticRealSolutionCount())
+print(MathProblems.quadraticRealSolutionCount())
 print(MathProblems.quadraticRealSolutionCount())
