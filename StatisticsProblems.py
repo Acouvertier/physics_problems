@@ -48,7 +48,7 @@ def make_list_with_stats(min_value:float, max_value:float, list_size:int, need_m
         
         return [full_list, mean, median, mode]
 
-def missing_value_mean(varName: str, size: int):
+def missing_value_mean(varName:str, size:int):
     mean = rd.randint(-100,100)
     total = mean*size
     minToMax = [min(sp.floor(.7*mean),sp.floor(1.3*mean)),max(sp.floor(.7*mean),sp.floor(1.3*mean))]
@@ -57,12 +57,12 @@ def missing_value_mean(varName: str, size: int):
     shuffled = rd.sample(given + [varName], k=size)
     return f"I have the following list: {shuffled} where {varName} is an unknown value. Create a real-life scenario word problem (standardized test-style), that asks the student to find the value of {varName}. The answer is {ans}, include other answer choices that are distinct and serve as distractors."
     
-def find_median(size: int):
+def find_median(size:int):
     data = [rd.randrange(-100,100) for _ in range(size)]
     ans = statistics.median(data)
     return f"I have the following list: {data}. Create a real-life scenario word problem (standardized test-style), that asks the student to find the median of the list. The answer is {ans}, include other answer choices that are distinct and serve as distractors."
 
-def calculate_mean(size: int):
+def calculate_mean(size:int):
     ans = rd.randint(-100,100)
     total = ans*size
     minToMax = [min(sp.floor(.7*ans),sp.floor(1.3*ans)),max(sp.floor(.7*ans),sp.floor(1.3*ans))]
@@ -79,7 +79,7 @@ def compare_3ms(min_val:int, max_val:int, list_size:int):
 
     return f"I have a Python list of numbers, and I would like to create a real-life scenario (such as comparing student grades, prices, or measurements) that asks the student to compare the values of the mean, median, and mode of the list. The question should guide the student to determine which of these measures is greatest or smallest. I will also provide the correct answer. Please generate the scenario and include multiple-choice options. Here is the list: {full_list}. The correct answer is {equality_order(correct_order)}."
      
-def updated_mean(min_val:int,max_val:int,list_size:int, add_remove:bool):
+def updated_mean(min_val:int, max_val:int, list_size:int, add_remove:bool):
     
     [full_list, mean, median, mode] = make_list_with_stats(min_val, max_val, list_size, rd.choice([True,False]))
     
@@ -111,7 +111,7 @@ def single_selection_probability(include_not:bool):
 
     return f"Given the following dictionary of counts (the values) for different categories (the keys): {question_dict}. Create real-life scenario where these categories have meaning, and then form an standardized test -style multiple-choice question. The question should indirectly ask to find the probability that {ans} is{add_not}{" (Use the NOT keyword in the question)" if include_not else ""} selected at random for a single draw. The answer is {ans_prob}. Remove references to the categories after you make the scenario, do not explain the mapping, and ensure the other choices are distinct (not equal to the answer)."
 
-def double_selection_probability(and_or:bool,no_replacements:bool):
+def double_selection_probability(and_or:bool, no_replacements:bool):
     
     problem_dict = create_single_data()
     keys = list(problem_dict.keys())
