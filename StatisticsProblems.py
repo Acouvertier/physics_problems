@@ -195,6 +195,3 @@ def two_way_table():
         denominator = column_headers[-1][-1]
 
     return f"Given the two way table for different categories, {column_headers}. Create a real-life scenario where these categories have meaning, and then form an standardized test -style multiple-choice question. The question should indirectly ask to find the probability that a randomly selected person is in category {prob}{f" given this person is also in category {cond}" if cond != -1 else ""}. Here is the ANSWER: {Fraction(numerator,denominator).limit_denominator()}. Remove references to the categories after you make the scenario, do not explain the mapping, and ensure the other choices are distinct (not equal to the answer)."
-
-
-print("BE CREATIVE. "+missing_value_mean("x", 4))

@@ -164,8 +164,6 @@ def sv_word_problem(problem_type:int):
         ans = parts.pop(rd.choice(range(len(parts))))
         return f"Create a real-world word problem where several parts of a whole are known, but one part is missing. The problem should require solving for the missing part when the sum of all the parts (the whole) is provided. The known parts are given as the list: {parts}, and the total (whole) is provided as a single number, {total}. The problem should involve a practical scenario that an Algebra 1 student would encounter. The problem should ask the student to solve for the missing part, the answer is {ans}."
 
-
-print(sv_word_problem(2))
     
 
 
